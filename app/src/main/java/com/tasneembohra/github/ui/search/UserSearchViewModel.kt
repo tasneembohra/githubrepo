@@ -24,7 +24,13 @@ class UserSearchViewModel(private val repo: Repository) : ViewModel() {
     val repoLiveData: LiveData<List<RepoModel>>
         get() = _repoLiveData
 
-    fun search(userId: String) {
+    fun search(userId: String) = viewModelScope.launch {
+        setLoading()
+        fetchUserInfo(userId)
+        fetchUserRepo(userId)
+    }
+
+    private fun setLoading() {
         user.loading.set(true)
         isErrorState.set(false)
         _repoLiveData.postValue(
@@ -38,11 +44,9 @@ class UserSearchViewModel(private val repo: Repository) : ViewModel() {
             )
         )
         showUserView.set(true)
-        fetchUserInfo(userId)
-        fetchUserRepo(userId)
     }
 
-    private fun fetchUserInfo(userId: String) = viewModelScope.launch {
+    private suspend fun fetchUserInfo(userId: String) {
         when (val result = repo.fetchUserInfo(userId)) {
             is SuccessState -> {
                 isErrorState.set(false)
@@ -57,7 +61,7 @@ class UserSearchViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    private fun fetchUserRepo(userId: String) = viewModelScope.launch {
+    private suspend fun fetchUserRepo(userId: String) {
         when (val result = repo.fetchUserRepDetails(userId)) {
             is SuccessState -> {
                 _repoLiveData.value = result.data.map { RepoModel(data = it) }
