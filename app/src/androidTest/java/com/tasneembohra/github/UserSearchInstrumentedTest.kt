@@ -6,11 +6,11 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.tasneembohra.github.ui.MainActivity
+import org.hamcrest.core.AllOf.allOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,7 +47,7 @@ class UserSearchInstrumentedTest {
     }
 
     @Test
-    fun scrollItemToFakePosition_ClickItem_CheckStarsCount() {
+    fun scrollItemToFakePosition_ClickItem_DialogDisplayed() {
         onView(withId(R.id.editText)).perform(typeText("tasneembohra"))
 
         onView(withId(R.id.btnSearch)).perform(click())
@@ -55,8 +55,16 @@ class UserSearchInstrumentedTest {
         onView(withId(R.id.recyclerview))
             .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
 
-        // Match the text in an item below the fold and check that it's displayed.
-        onView(withId(R.id.tvStars)).check(matches(withText("0")))
-    }
+        val lastUpdateDateDialogText =
+            activityTestRule.activity.resources.getString(R.string.last_updated)
 
+        onView(withId(R.id.tvTitleDate)).check(
+            matches(
+                allOf(
+                    withText(lastUpdateDateDialogText),
+                    isDisplayed()
+                )
+            )
+        )
+    }
 }
