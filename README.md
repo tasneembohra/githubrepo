@@ -11,6 +11,7 @@ This project follows MVVP architecture and Single Activity architecture.
 
 It contains Espresso UI Testing and JUnit, Mockito unit testing.
 
+<img src="https://github.com/tasneembohra/githubrepo/blob/master/screenshot/list.png" alt="alt text" width="250" height="500"><img src="https://github.com/tasneembohra/githubrepo/blob/master/screenshot/dialog.png" alt="alt text" width="250" height="500">
 
 ### Prerequisites
 
