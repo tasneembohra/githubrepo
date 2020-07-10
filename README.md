@@ -7,7 +7,7 @@ App to fetch Github user and their repo.
 
 ## Getting Started
 
-This project follows MVVP architecture and Single Activity architecture.
+This project follows MVVM architecture and Single Activity architecture.
 
 It contains Espresso UI Testing and JUnit, Mockito unit testing.
 
